@@ -146,19 +146,17 @@ exports.cellsToJson = async function(allCells, options) {
     let headers = allCells.headerValues;
     console.log("headers : " + headers);
     
-    let returnObjs = [];
-    rows.map((row, index) => {
+    return rows.map((row, index) => {
         let obj = {};
         headers.map(header => {
-            if (typeof row[header] !== 'undefined' && row[header]) {
-                obj[header] = row[header];
+            var val = row[header];
+            if (typeof val !== 'undefined' && val) {
+                obj[header] = val;
             }
         })
-        returnObjs.push(obj);
+        return obj;
         //console.log(index + " -> " + row.id);
     })
-
-    return returnObjs;
 }
 
 exports.spreadsheetToJson = async function(options) {
