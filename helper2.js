@@ -146,16 +146,11 @@ exports.cellsToJson = async function(allCells, options) {
     let headers = allCells.headerValues;
     console.log("headers : " + headers);
     
+    //Note: row doesn't have any formatting or formula info; cell contains all that
+    //console.log(allCells.getCellByA1("A2").valueType);
+
     return rows.map((row, index) => {
-        let obj = {};
-        headers.map(header => {
-            var val = row[header];
-            if (typeof val !== 'undefined' && val) {
-                obj[header] = val;
-            }
-        })
-        return obj;
-        //console.log(index + " -> " + row.id);
+        return Object.assign(...headers.map(k => row[k] && {[k]: row[k]}));
     })
 }
 
