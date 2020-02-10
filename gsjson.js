@@ -3,7 +3,7 @@
 var fs = require('fs')
 var program = require('commander')
 var Promise = require('bluebird')
-var helper = require('./helper')
+var helper = require('./helper2')
 var packageData = require('./package.json')
 
 program
