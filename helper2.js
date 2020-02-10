@@ -150,11 +150,8 @@ exports.cellsToJson = async function(allCells, options) {
     rows.map((row, index) => {
         let obj = {};
         headers.map(header => {
-            if (isNaN(row[header])) {
+            if (typeof row[header] !== 'undefined' && row[header]) {
                 obj[header] = row[header];
-            }
-            else {
-                obj[header] = parseInt(row[header]);
             }
         })
         returnObjs.push(obj);
