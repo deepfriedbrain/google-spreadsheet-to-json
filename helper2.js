@@ -140,17 +140,18 @@ exports.cellsToJson = async function(allCells, options) {
     var ignoredDataNumbers = options.vertical ? ignoredRows : ignoredCols
     ignoredDataNumbers.sort().reverse()
 
-    var rows = await allCells.getRows();    
+    var rows = await allCells.getRows();
     console.log("rowCount : " + allCells.rowCount);
 
     let headers = allCells.headerValues;
     console.log("headers : " + headers);
-    
+
     //Note: row doesn't have any formatting or formula info; cell contains all that
     //console.log(allCells.getCellByA1("A2").valueType);
 
     return rows.map((row, index) => {
         return Object.assign(...headers.map(k => row[k] && {[k]: row[k]}));
+        //return Object.assign(...headers.map(k => row[k] && {[k]: handlePossibleIntValue(row[k])}));
     })
 }
 
@@ -166,7 +167,7 @@ exports.spreadsheetToJson = async function(options) {
     }
 
     await spreadsheet.loadInfo();
-    console.log(spreadsheet.title);
+    console.log("spreadsheet.title : " + spreadsheet.title);
 
     var worksheets = spreadsheet.sheetsByIndex;
     var selectedWorksheets;
@@ -181,14 +182,14 @@ exports.spreadsheetToJson = async function(options) {
         if (!expectMultipleWorksheets) {
             selectedWorksheets = selectedWorksheets.slice(0, 1)
         }
-            
+
         if (selectedWorksheets.length === 0) {
             throw new Error('No worksheet found!')
         }
     }
-        
+
     var finalList = selectedWorksheets.map(async function(worksheet) {
-        console.log (worksheet.title)
+        console.log ("worksheet.title : " + worksheet.title)
         await worksheet.loadCells();
         console.log(worksheet.cellStats);
         return exports.cellsToJson(worksheet, options);
