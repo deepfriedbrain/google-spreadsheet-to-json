@@ -149,7 +149,14 @@ exports.cellsToJson = async function(allCells, options) {
     //Note: row doesn't have any formatting or formula info; cell contains all that
     //console.log(allCells.getCellByA1("A2").valueType);
 
-    return rows.map((row, index) => {
+    var nonEmptyRows = rows.filter((row, index) => {
+        //console.log("row.id : " + row[headers[0]]);
+        return row[headers[0]];
+    });
+
+    console.log("nonEmptyRows length : " + nonEmptyRows.length);
+
+    return nonEmptyRows.map((row, index) => {
         return Object.assign(...headers.map(k => row[k] && {[k]: row[k]}));
         //return Object.assign(...headers.map(k => row[k] && {[k]: handlePossibleIntValue(row[k])}));
     })
